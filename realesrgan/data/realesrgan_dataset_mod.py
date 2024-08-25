@@ -110,27 +110,26 @@ class RealESRGANDatasetMod(data.Dataset):
         # -------------------- Do augmentation for training: flip, rotation -------------------- #
         img_gt = augment(img_gt, self.opt['use_hflip'], self.opt['use_rot'])
 
-        # crop or pad to 400
-        # TODO: 400 is hard-coded. You may change it accordingly
         h, w = img_gt.shape[0:2]
-        min_size = min(h, w)
-        # get crop_sizes from self.crop_sizes less than min_size
-        crop_sizes = [x for x in self.crop_sizes if x < min_size]
-        crop_size = random.choice(crop_sizes)
-        # crop_pad_size = 400
+        # get crop_size from self.crop_sizes less than min size
+        crop_size = random.choice([x for x in self.crop_sizes if x <= min(h, w)])
+        crop_pad_size = int(1.25 * crop_size) # for 256 will be 320
+        gt_crop_size = int(1.25 * self.gt_size) # for 256 will be 320
         # pad
-        # TODO
-        # if h < crop_pad_size or w < crop_pad_size:
-        #     pad_h = max(0, crop_pad_size - h)
-        #     pad_w = max(0, crop_pad_size - w)
-        #     img_gt = cv2.copyMakeBorder(img_gt, 0, pad_h, 0, pad_w, cv2.BORDER_REFLECT_101)
-        # # crop
-        # if img_gt.shape[0] > crop_pad_size or img_gt.shape[1] > crop_pad_size:
-        #     h, w = img_gt.shape[0:2]
-        #     # randomly choose top and left coordinates
-        #     top = random.randint(0, h - crop_pad_size)
-        #     left = random.randint(0, w - crop_pad_size)
-        #     img_gt = img_gt[top:top + crop_pad_size, left:left + crop_pad_size, ...]
+        if h < crop_pad_size or w < crop_pad_size:
+            pad_h = max(0, crop_pad_size - h)
+            pad_w = max(0, crop_pad_size - w)
+            img_gt = cv2.copyMakeBorder(img_gt, 0, pad_h, 0, pad_w, cv2.BORDER_REFLECT_101)
+        # crop
+        if img_gt.shape[0] > crop_pad_size and img_gt.shape[1] > crop_pad_size:
+            h, w = img_gt.shape[0:2]
+            # randomly choose top and left coordinates
+            top = random.randint(0, h - crop_pad_size)
+            left = random.randint(0, w - crop_pad_size)
+            img_gt = img_gt[top:top + crop_pad_size, left:left + crop_pad_size, ...]
+        
+        if img_gt.shape[0] > gt_crop_size or img_gt.shape[1] > gt_crop_size:
+            img_gt = cv2.resize(img_gt, (gt_crop_size, gt_crop_size), interpolation=cv2.INTER_CUBIC)
 
         # ------------------------ Generate kernels (used in the first degradation) ------------------------ #
         kernel_size = random.choice(self.kernel_range)
