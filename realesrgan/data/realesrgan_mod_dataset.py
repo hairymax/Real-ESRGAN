@@ -39,7 +39,7 @@ class RealESRGANDatasetMod(data.Dataset):
         self.io_backend_opt = opt['io_backend']
         self.gt_folder = opt['dataroot_gt']
         self.gt_size = opt['gt_size']
-        self.crop_sizes = [opt[int(c*self.gt_size)] for c in opt['crop_increase']] # self.gt_size 
+        self.crop_sizes = [int(c*self.gt_size) for c in opt['crop_increase']] # self.gt_size 
                 
         # file client (lmdb io backend)
         if self.io_backend_opt['type'] == 'lmdb':
@@ -135,7 +135,7 @@ class RealESRGANDatasetMod(data.Dataset):
             img_gt = img_gt[top:top + crop_pad_size, left:left + crop_pad_size, ...]
         
         if img_gt.shape[0] > gt_crop_size or img_gt.shape[1] > gt_crop_size:
-            img_gt = cv2.resize(img_gt, (gt_crop_size, gt_crop_size), interpolation=cv2.INTER_CUBIC)
+            img_gt = cv2.resize(img_gt, (gt_crop_size, gt_crop_size), interpolation=cv2.INTER_LINEAR)
 
         # ------------------------ Generate kernels (used in the first degradation) ------------------------ #
         kernel_size = random.choice(self.kernel_range)

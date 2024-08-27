@@ -36,10 +36,10 @@ queue_size: 180
 # dataset and data loader settings
 datasets:
   train:
-    name: DF2K+OST
+    name: satellite
     type: RealESRGANDatasetMod
-    dataroot_gt: datasets/DF2K
-    meta_info: datasets/DF2K/meta_info/meta_info_DF2Kmultiscale+OST_sub.txt
+    dataroot_gt: /home/hm/projects/superresolution/datasets/all/train
+    meta_info: /home/hm/projects/superresolution/datasets/all/train_info.txt
     io_backend:
       type: disk
     crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5, 10] # new param
