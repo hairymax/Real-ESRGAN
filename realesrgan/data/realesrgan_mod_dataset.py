@@ -111,8 +111,14 @@ class RealESRGANDatasetMod(data.Dataset):
         img_gt = augment(img_gt, self.opt['use_hflip'], self.opt['use_rot'])
 
         h, w = img_gt.shape[0:2]
-        # get crop_size from self.crop_sizes less than min size
-        crop_size = random.choice([x for x in self.crop_sizes if x <= min(h, w)])
+        # get crop_size from self.crop_sizes
+        if self.opt['crop_increase_mode'] == 'random':
+            crop_size = random.choice([x for x in self.crop_sizes if x <= min(h, w)])
+        elif self.opt['crop_increase_mode'] == 'fixed':
+            crop_size = self.crop_sizes[0]
+        elif self.opt['crop_increase_mode'] == 'max':
+            crop_size = max([x for x in self.crop_sizes if x <= min(h, w)])
+            
         crop_pad_size = int(1.25 * crop_size) # for 256 will be 320
         gt_crop_size = int(1.25 * self.gt_size) # for 256 will be 320
         # pad

@@ -37,12 +37,13 @@ queue_size: 180
 datasets:
   train:
     name: DF2K+OST
-    type: RealESRGANDataset
+    type: RealESRGANDatasetMod
     dataroot_gt: datasets/DF2K
     meta_info: datasets/DF2K/meta_info/meta_info_DF2Kmultiscale+OST_sub.txt
     io_backend:
       type: disk
     crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5, 10] # new param
+    crop_increase_mode: random # new param (random, max, fixed)
 
     blur_kernel_size: 21
     kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
