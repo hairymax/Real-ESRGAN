@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=ESRNET        # create a short name for your job
+#SBATCH --job-name=ESRNET2        # create a short name for your job
 #SBATCH --partition=ais-gpu 
 #SBATCH --nodes=1                # node count
 #SBATCH --ntasks-per-node=1      # total number of tasks per node
@@ -29,7 +29,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 \
 python -m torch.distributed.launch \
     --nproc_per_node=4 \
     --master_port=13110 \
-    realesrgan/train.py -opt options/train_realesrnet_x4plus_mod.yml \
+    realesrgan/train.py -opt options/train_realesrnet_x2plus_mod.yml \
                         --launcher pytorch --auto_resume #--debug
 
 # 2

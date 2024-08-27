@@ -1,7 +1,7 @@
 # general settings
-name: RealESRNetx4plus_satellite_10m_1000k 
+name: RealESRNetx2plus_satellite_5m_1000k
 model_type: RealESRNetModel
-scale: 4
+scale: 2
 num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
 manual_seed: 0
 
@@ -43,7 +43,7 @@ datasets:
     meta_info: /trinity/home/m.aleshin/projects/superresolution/datasets/all/train_info.txt
     io_backend:
       type: disk
-    crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5, 10] # new param
+    crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5] # new param
     crop_increase_mode: random # new param (random, max, fixed)
 
     blur_kernel_size: 21
@@ -70,7 +70,7 @@ datasets:
 
     # data loader
     use_shuffle: true
-    num_worker_per_gpu: 6
+    num_worker_per_gpu: 8
     batch_size_per_gpu: 64
     dataset_enlarge_ratio: 1
     prefetch_mode: ~
@@ -92,12 +92,13 @@ network_g:
   num_feat: 64
   num_block: 23
   num_grow_ch: 32
+  scale: 2
 
 # path
 path:
   pretrain_network_g: experiments/pretrained_models/ESRGAN_SRx4_DF2KOST_official-ff704c30.pth
   param_key_g: params_ema
-  strict_load_g: true
+  strict_load_g: False
   resume_state: ~
 
 # training settings
