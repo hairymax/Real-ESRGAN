@@ -96,7 +96,7 @@ network_g:
 
 # path
 path:
-  pretrain_network_g: experiments/RealESRNetx2plus_satellite_5m_1000k/models/net_g_15000.pth
+  pretrain_network_g: experiments/RealESRNetx2plus_satellite_5m_1000k/models/net_g_220000.pth
   param_key_g: params_ema
   strict_load_g: False
   resume_state: ~

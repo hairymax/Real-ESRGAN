@@ -4,8 +4,8 @@
 #SBATCH --nodes=1                # node count
 #SBATCH --ntasks-per-node=1      # total number of tasks per node
 #SBATCH --gpus=4
-#SBATCH --cpus-per-task=64         
-#SBATCH --mem-per-cpu=8G
+#SBATCH --cpus-per-task=32         
+#SBATCH --mem-per-cpu=12G
 #SBATCH --time=7-00:00:00       # total run time limit (HH:MM:SS)
 #SBATCH --mail-type=begin        # send email when job begins
 #SBATCH --mail-type=end          # send email when job ends
@@ -23,12 +23,12 @@ cd /beegfs/home/m.aleshin/projects/superresolution/Real-ESRGAN
 
 # nvidia-smi
 
-export OMP_NUM_THREADS=8
+export OMP_NUM_THREADS=2
 # 1
 CUDA_VISIBLE_DEVICES=0,1,2,3 \
 python -m torch.distributed.launch \
     --nproc_per_node=4 \
-    --master_port=13110 \
+    --master_port=13114 \
     realesrgan/train.py -opt options/train_realesrnet_x4plus_mod.yml \
                         --launcher pytorch --auto_resume #--debug
 
