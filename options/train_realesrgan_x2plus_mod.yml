@@ -1,7 +1,7 @@
 # general settings
-name: RealESRGANx4plus_satellite_500k
+name: RealESRGANx2plus_satellite_500k
 model_type: RealESRGANModel
-scale: 4
+scale: 2
 num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
 manual_seed: 0
 
@@ -42,9 +42,9 @@ datasets:
     meta_info: /trinity/home/m.aleshin/projects/superresolution/datasets/all/train_info.txt
     io_backend:
       type: disk
+    crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5] # new param
     crop_increase_mode: random # new param (random, max, fixed)
-    crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5, 10] # new param
-
+    
     blur_kernel_size: 21
     kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
     kernel_prob: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
@@ -65,7 +65,7 @@ datasets:
 
     gt_size: 256
     use_hflip: True
-    use_rot: True # default: False
+    use_rot: True # default False
 
     # data loader
     use_shuffle: true
@@ -79,7 +79,7 @@ datasets:
     name: validation
     type: PairedImageDataset
     dataroot_gt: /trinity/home/m.aleshin/projects/superresolution/datasets/all/val/hr2m
-    dataroot_lq: /trinity/home/m.aleshin/projects/superresolution/datasets/all/val/lr8m
+    dataroot_lq: /trinity/home/m.aleshin/projects/superresolution/datasets/all/val/lr4m
     io_backend:
       type: disk
 
@@ -91,7 +91,7 @@ network_g:
   num_feat: 64
   num_block: 23
   num_grow_ch: 32
-  scale: 4
+  scale: 2
 
 network_d:
   type: UNetDiscriminatorSN
@@ -102,13 +102,13 @@ network_d:
 # path
 path:
   # use the pre-trained Real-ESRNet model
-  pretrain_network_g: experiments/RealESRGANx4plus_satellite_500k/models/net_g_465000.pth
+  pretrain_network_g: experiments/RealESRGANx2plus_satellite_500k/models/net_g_485000.pth 
   param_key_g: params_ema
   strict_load_g: true
-  pretrain_network_d: experiments/RealESRGANx4plus_satellite_500k/models/net_d_465000.pth
+  pretrain_network_d: experiments/RealESRGANx2plus_satellite_500k/models/net_d_485000.pth
   param_key_d: params
   strict_load_d: true
-  resume_state: experiments/RealESRGANx4plus_satellite_500k/training_states/465000.state
+  resume_state: experiments/RealESRGANx2plus_satellite_500k/training_states/485000.state
 
 # training settings
 train:

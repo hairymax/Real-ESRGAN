@@ -1,8 +1,8 @@
 # general settings
-name: RealESRGANx4plus_satellite_500k
+name: RealESRGANx4plus_200k_3m
 model_type: RealESRGANModel
-scale: 4
-num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
+scale: 2
+num_gpu: auto
 manual_seed: 0
 
 # ----------------- options for synthesizing training data in RealESRGANModel ----------------- #
@@ -39,11 +39,15 @@ datasets:
     name: satellite
     type: RealESRGANDatasetMod
     dataroot_gt: /trinity/home/m.aleshin/projects/superresolution/datasets/all/train
-    meta_info: /trinity/home/m.aleshin/projects/superresolution/datasets/all/train_info.txt
+    meta_info: /trinity/home/m.aleshin/projects/superresolution/datasets/all/finetune_info.txt
     io_backend:
       type: disk
-    crop_increase_mode: random # new param (random, max, fixed)
-    crop_increase: [1, 1.5, 2, 2.5, 3, 4, 5, 10] # new param
+    crop_increase_mode: fixed # new param (random, max, fixed)
+    crop_increase: 
+      mapbox: 1.5
+      mrd: 1.5
+      xview: 5
+      xview2: 3
 
     blur_kernel_size: 21
     kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
@@ -65,7 +69,7 @@ datasets:
 
     gt_size: 256
     use_hflip: True
-    use_rot: True # default: False
+    use_rot: True
 
     # data loader
     use_shuffle: true
@@ -79,7 +83,7 @@ datasets:
     name: validation
     type: PairedImageDataset
     dataroot_gt: /trinity/home/m.aleshin/projects/superresolution/datasets/all/val/hr2m
-    dataroot_lq: /trinity/home/m.aleshin/projects/superresolution/datasets/all/val/lr8m
+    dataroot_lq: /trinity/home/m.aleshin/projects/superresolution/datasets/all/val/lr4m
     io_backend:
       type: disk
 
@@ -91,7 +95,7 @@ network_g:
   num_feat: 64
   num_block: 23
   num_grow_ch: 32
-  scale: 4
+  scale: 2
 
 network_d:
   type: UNetDiscriminatorSN
@@ -102,13 +106,13 @@ network_d:
 # path
 path:
   # use the pre-trained Real-ESRNet model
-  pretrain_network_g: experiments/RealESRGANx4plus_satellite_500k/models/net_g_465000.pth
+  pretrain_network_g: experiments/RealESRGANx2plus_satellite_500k/models/net_g_500000.pth
   param_key_g: params_ema
   strict_load_g: true
-  pretrain_network_d: experiments/RealESRGANx4plus_satellite_500k/models/net_d_465000.pth
+  pretrain_network_d: experiments/RealESRGANx2plus_satellite_500k/models/net_d_500000.pth
   param_key_d: params
   strict_load_d: true
-  resume_state: experiments/RealESRGANx4plus_satellite_500k/training_states/465000.state
+  resume_state: ~
 
 # training settings
 train:
@@ -126,10 +130,10 @@ train:
 
   scheduler:
     type: MultiStepLR
-    milestones: [400000]
+    milestones: [200000]
     gamma: 0.5
 
-  total_iter: 500000
+  total_iter: 200000
   warmup_iter: -1  # no warm up
 
   # losses
@@ -167,7 +171,7 @@ train:
 # Uncomment these for validation
 # validation settings
 val:
-  val_freq: !!float 10e3
+  val_freq: !!float 5e3
   save_img: True
 
   metrics:
