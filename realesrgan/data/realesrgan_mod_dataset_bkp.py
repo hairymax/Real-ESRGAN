@@ -14,7 +14,7 @@ from torch.utils import data as data
 
 
 @DATASET_REGISTRY.register()
-class RealESRGANDatasetMod2(data.Dataset):
+class RealESRGANDatasetMod(data.Dataset):
     """Dataset used for Real-ESRGAN model:
     Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data.
 
@@ -39,10 +39,7 @@ class RealESRGANDatasetMod2(data.Dataset):
         self.io_backend_opt = opt['io_backend']
         self.gt_folder = opt['dataroot_gt']
         self.gt_size = opt['gt_size']
-        if self.opt['crop_increase_mode'] == 'fixed':
-            self.crop_sizes = {s: int(c*self.gt_size) for s, c in self.opt['crop_sizes'].items()}
-        else:    
-            self.crop_sizes = [int(c*self.gt_size) for c in opt['crop_increase']] # self.gt_size 
+        self.crop_sizes = [int(c*self.gt_size) for c in opt['crop_increase']] # self.gt_size 
                 
         # file client (lmdb io backend)
         if self.io_backend_opt['type'] == 'lmdb':
@@ -117,10 +114,10 @@ class RealESRGANDatasetMod2(data.Dataset):
         # get crop_size from self.crop_sizes
         if self.opt['crop_increase_mode'] == 'random':
             crop_size = random.choice([x for x in self.crop_sizes if x <= min(h, w)])
+        elif self.opt['crop_increase_mode'] == 'fixed':
+            crop_size = self.crop_sizes[0]
         elif self.opt['crop_increase_mode'] == 'max':
             crop_size = max([x for x in self.crop_sizes if x <= min(h, w)])
-        elif self.opt['crop_increase_mode'] == 'fixed':
-            crop_size = self.crop_sizes[os.path.dirname(gt_path).split('/')[-1]]
             
         crop_pad_size = int(1.25 * crop_size) # for 256 will be 320
         gt_crop_size = int(1.25 * self.gt_size) # for 256 will be 320

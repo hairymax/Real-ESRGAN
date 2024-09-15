@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=ESRGAN4       # create a short name for your job
+#SBATCH --job-name=ESRGAN4x10m       # create a short name for your job
 #SBATCH --partition=ais-gpu
 #SBATCH --nodes=1                # node count
 #SBATCH --ntasks-per-node=1      # total number of tasks per node
