@@ -6,7 +6,7 @@
 #SBATCH --gpus=4                 # 4
 #SBATCH --cpus-per-task=32       # cpu-cores per task (>1 if multi-threaded tasks)
 #SBATCH --mem-per-cpu=12G
-#SBATCH --time=10-00:00:00       # total run time limit (HH:MM:SS)
+#SBATCH --time=3-00:00:00       # total run time limit (HH:MM:SS)
 #SBATCH --mail-type=begin        # send email when job begins
 #SBATCH --mail-type=end          # send email when job ends
 #SBATCH --mail-type=fail         # send email when job fails
