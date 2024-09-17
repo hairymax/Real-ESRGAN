@@ -40,7 +40,7 @@ class RealESRGANDatasetMod(data.Dataset):
         self.gt_folder = opt['dataroot_gt']
         self.gt_size = opt['gt_size']
         if self.opt['crop_increase_mode'] == 'fixed':
-            self.crop_sizes = {s: int(c*self.gt_size) for s, c in self.opt['crop_sizes'].items()}
+            self.crop_sizes = {s: int(c*self.gt_size) for s, c in self.opt['crop_increase'].items()}
         else:    
             self.crop_sizes = [int(c*self.gt_size) for c in opt['crop_increase']] # self.gt_size 
                 
