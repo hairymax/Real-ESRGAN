@@ -1,5 +1,5 @@
 # general settings
-name: RealESRGANx4plus_100k_3m
+name: RealESRGANx2plus_100k_3m
 model_type: RealESRGANModel
 scale: 2
 num_gpu: auto
