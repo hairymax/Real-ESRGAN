@@ -106,13 +106,13 @@ network_d:
 # path
 path:
   # use the pre-trained Real-ESRNet model
-  pretrain_network_g: experiments/RealESRGANx4plus_500k_3m/models/net_g_latest.pth
+  pretrain_network_g: experiments/RealESRGANx2plus_500k_3m/models/net_g_latest.pth
   param_key_g: params_ema
   strict_load_g: true
-  pretrain_network_d: experiments/RealESRGANx4plus_500k_3m/models/net_d_latest.pth
+  pretrain_network_d: experiments/RealESRGANx2plus_500k_3m/models/net_d_latest.pth
   param_key_d: params
   strict_load_d: true
-  resume_state: experiments/RealESRGANx4plus_500k_3m/training_states/95000.state
+  resume_state: experiments/RealESRGANx2plus_500k_3m/training_states/95000.state
 
 # training settings
 train:
